@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}My Destinations - MyTravelPlanner{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>My Destinations</h1>
+</div>
+
+<div class="row">
+    {% for destination in destinations %}
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ destination.name }}</h5>
+                <p class="card-text text-muted">{{ destination.city }}, {{ destination.country }}</p>
+                <p class="card-text">{{ destination.description|truncatewords:15 }}</p>
+                <span class="badge bg-secondary">{{ destination.category }}</span>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">Added: {{ destination.created_at|date:"M d, Y" }}</small>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="text-center py-5">
+            <h3>No destinations yet</h3>
+            <p class="text-muted">Start by adding destinations to your trips!</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

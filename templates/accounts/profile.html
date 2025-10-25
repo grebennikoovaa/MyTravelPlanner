@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - MyTravelPlanner{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4>Profile Information</h4>
+            </div>
+            <div class="card-body">
+                {% if user.profile_picture %}
+                    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="img-fluid rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 150px; height: 150px;">
+                        <span class="text-white h4">{{ user.username|first|upper }}</span>
+                    </div>
+                {% endif %}
+                
+                <h5>{{ user.username }}</h5>
+                <p class="text-muted">{{ user.email }}</p>
+                
+                {% if user.bio %}
+                    <p>{{ user.bio }}</p>
+                {% endif %}
+                
+                {% if user.location %}
+                    <p><strong>Location:</strong> {{ user.location }}</p>
+                {% endif %}
+                
+                <a href="#" class="btn btn-outline-primary btn-sm">Edit Profile</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>My Trips ({{ user.trips.count }})</h4>
+            </div>
+            <div class="card-body">
+                {% if user.trips.all %}
+                    <div class="list-group">
+                        {% for trip in user.trips.all %}
+                        <a href="{% url 'trip_detail' trip.pk %}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">{{ trip.title }}</h5>
+                                <small>{{ trip.start_date }} to {{ trip.end_date }}</small>
+                            </div>
+                            <p class="mb-1">{{ trip.description|truncatewords:20 }}</p>
+                            <span class="badge bg-{% if trip.privacy == 'public' %}success{% elif trip.privacy == 'shared' %}warning{% else %}secondary{% endif %}">
+                                {{ trip.privacy }}
+                            </span>
+                        </a>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">You haven't created any trips yet.</p>
+                    <a href="{% url 'trip_create' %}" class="btn btn-primary">Create Your First Trip</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
