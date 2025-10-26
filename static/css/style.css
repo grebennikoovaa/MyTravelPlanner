@@ -1,0 +1,24 @@
+:root {
+  --bs-primary: #004505; 
+  --bs-secondary: #6527d9; 
+  --bs-success: #20c997;
+  --bs-danger: #dc3545;
+  --bs-warning: #ffc107;
+  --bs-info: rgba(255, 105, 165, 0.911)5;
+  --bs-light: #f8f9fa;
+  --bs-dark: #212529;
+}
+
+.navbar {
+  background-color: var(--bs-primary) !important;
+}
+
+.navbar .nav-link:hover {
+  color: #fff0f5 !important;
+  text-decoration: underline;
+}
+
+footer {
+  background-color: var(--bs-secondary);
+  color: white;
+}

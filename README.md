@@ -1,4 +1,4 @@
-# MyTravelPlanner 🌍
+# MyTravelPlanner 
 
 A web application for planning and sharing travel itineraries built with Django.
 
