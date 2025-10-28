@@ -1,10 +1,10 @@
 :root {
-  --bs-primary: #004505; 
+  --bs-primary: #009886; 
   --bs-secondary: #6527d9; 
   --bs-success: #20c997;
   --bs-danger: #dc3545;
-  --bs-warning: #ffc107;
-  --bs-info: rgba(255, 105, 165, 0.911)5;
+  --bs-warning: #00600a;
+  --bs-info: rgba(236, 44, 121, 0.911)5;
   --bs-light: #f8f9fa;
   --bs-dark: #212529;
 }
@@ -22,3 +22,4 @@ footer {
   background-color: var(--bs-secondary);
   color: white;
 }
+

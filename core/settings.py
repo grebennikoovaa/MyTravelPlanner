@@ -3,7 +3,7 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-your-secret-key-here'  # Замените в продакшене!
+SECRET_KEY = 'django-insecure-your-secret-key-here' 
 
 DEBUG = True
 
@@ -16,6 +16,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # apps
     'accounts',
     'trips',
@@ -51,7 +52,7 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Используем SQLite для начала
+        'ENGINE': 'django.db.backends.sqlite3',  
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
@@ -83,10 +84,8 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Используем нашу кастомную модель пользователя
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-# Настройки для логина/логаута
 LOGIN_REDIRECT_URL = 'trip_list'
 LOGOUT_REDIRECT_URL = 'trip_list'
 LOGIN_URL = 'login'

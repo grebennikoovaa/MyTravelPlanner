@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ profile_user.username }} - MyTravelPlanner{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" 
+                     style="width: 100px; height: 100px;">
+                    <span class="text-white h4">{{ profile_user.username|first|upper }}</span>
+                </div>
+                
+                <h4>{{ profile_user.username }}</h4>
+                
+                {% if profile_user.bio %}
+                    <p class="mt-3">{{ profile_user.bio }}</p>
+                {% endif %}
+                
+                {% if profile_user.location %}
+                    <p class="text-muted">{{ profile_user.location }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Public Trips ({{ public_trips.count }})</h4>
+            </div>
+            <div class="card-body">
+                {% if public_trips %}
+                    <div class="row">
+                        {% for trip in public_trips %}
+                        <div class="col-md-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ trip.title }}</h5>
+                                    <p class="card-text text-muted">{{ trip.start_date }} to {{ trip.end_date }}</p>
+                                    <p class="card-text">{{ trip.description|truncatewords:15 }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-outline-primary btn-sm">View Trip</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p class="text-muted">{{ profile_user.username }} hasn't shared any public trips yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

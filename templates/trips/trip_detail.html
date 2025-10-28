@@ -2,18 +2,6 @@
 
 {% block title %}{{ trip.title }} - MyTravelPlanner{% endblock %}
 
-{% block extra_css %}
-<style>
-    #trip-map { 
-        height: 400px; 
-        border-radius: 0.375rem;
-    }
-    .leaflet-container {
-        border-radius: 0.375rem;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
 <div class="row">
     <div class="col-md-8">
@@ -38,6 +26,34 @@
         </div>
         {% endif %}
 
+        <!-- Кнопки лайков и сохранения -->
+        {% if user.is_authenticated %}
+        <div class="card mb-4">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <form method="post" action="{% url 'like_trip' trip.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger btn-lg w-100">
+                                <i class="bi bi-heart{% if trip.likes.count %}-fill{% endif %}"></i>
+                                Like ({{ trip.likes.count }})
+                            </button>
+                        </form>
+                    </div>
+                    <div class="col-md-6">
+                        <form method="post" action="{% url 'save_trip' trip.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-primary btn-lg w-100">
+                                <i class="bi bi-bookmark{% if trip.saves.count %} fill{% endif %}"></i>
+                                Save ({{ trip.saves.count }})
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Карта -->
         <div class="card mb-4">
             <div class="card-header">
@@ -46,12 +62,11 @@
             <div class="card-body">
                 <div id="trip-map" style="height: 400px; background-color: #f8f9fa; border-radius: 0.375rem; display: flex; align-items: center; justify-content: center;">
                     <div class="text-center text-muted">
-                        <i class="fas fa-map-marked-alt fa-3x mb-2"></i>
+                        <i class="bi bi-map fa-3x mb-2"></i>
                         <p>Map functionality</p>
                         <small>Interactive maps coming soon</small>
                     </div>
                 </div>
-                <p class="text-muted mt-2 small">Map features will be added in future updates</p>
             </div>
         </div>
     </div>
@@ -73,6 +88,9 @@
                     </span>
                 </p>
                 <p><strong>Created:</strong> {{ trip.created_at|date:"M d, Y" }}</p>
+                <p><strong>Likes:</strong> {{ trip.likes.count }}</p>
+                <p><strong>Saves:</strong> {{ trip.saves.count }}</p>
+                <p><strong>Comments:</strong> {{ trip.comments.count }}</p>
             </div>
         </div>
 
@@ -130,7 +148,54 @@
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_js %}
+<!-- Секция комментариев -->
+<div class="card mt-4">
+    <div class="card-header">
+        <h5 class="mb-0">
+            <i class="bi bi-chat-left-text"></i> Comments ({{ trip.comments.count }})
+        </h5>
+    </div>
+    <div class="card-body">
+        <!-- Форма добавления комментария -->
+        {% if user.is_authenticated %}
+        <form method="post" action="{% url 'add_comment' trip.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <textarea name="content" class="form-control" rows="3" 
+                          placeholder="Share your thoughts about this trip..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Post Comment</button>
+        </form>
+        <hr>
+        {% endif %}
+
+        <!-- Список комментариев -->
+        {% for comment in trip.comments.all %}
+        <div class="comment mb-3 p-3 border rounded">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                    <strong>
+                        <a href="{% url 'user_public_profile' comment.user.username %}">
+                            {{ comment.user.username }}
+                        </a>
+                    </strong>
+                    <small class="text-muted ms-2">{{ comment.created_at|timesince }} ago</small>
+                    <p class="mb-1 mt-2">{{ comment.content }}</p>
+                </div>
+                {% if user == comment.user or user == trip.owner %}
+                <form method="post" action="{% url 'delete_comment' comment.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-muted text-center py-3">No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

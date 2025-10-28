@@ -1,5 +1,5 @@
 from django import forms
-from .models import Trip, Destination
+from .models import Trip, Destination, TripComment, DestinationRating
 
 class TripForm(forms.ModelForm):
     start_date = forms.DateField(
@@ -39,6 +39,31 @@ class DestinationForm(forms.ModelForm):
                 ('other', 'Other')
             ]),
         }
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+
+class TripCommentForm(forms.ModelForm):
+    class Meta:
+        model = TripComment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Share your thoughts about this trip...'
+            }),
+        }
+
+# ЗАКОММЕНТИРУЙТЕ ЭТУ ФОРМУ ПОКА ЧТО:
+'''
+class DestinationRatingForm(forms.ModelForm):
+    class Meta:
+        model = DestinationRating
+        fields = ['rating', 'comment']
+        widgets = {
+            'rating': forms.Select(attrs={'class': 'form-control'}),
+            'comment': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Share your experience...'
+            }),
+        }
+'''

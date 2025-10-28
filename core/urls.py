@@ -5,8 +5,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('trips.urls')),  # Главная страница - наши поездки
-    path('accounts/', include('accounts.urls')),  # Аутентификация
+    path('', include('trips.urls')),  
+    path('accounts/', include('accounts.urls')),  
 ]
 
 if settings.DEBUG:
